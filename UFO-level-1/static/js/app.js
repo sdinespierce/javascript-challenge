@@ -2,8 +2,9 @@
 let tableData = data;
 
 // initialize variables
-tbody = d3.select("tbody");
-input = d3.select("#datetime");
+let tbody = d3.select("tbody");
+let input = d3.select("#datetime");
+let form = d3.select("form")
 
 // loop through data, create row, insert into td cells
 //TODO: right justify, Capitalize City Names, fix &#44 string in comments field
@@ -17,9 +18,7 @@ tableData.forEach((report) => {
 
 // func to apply filter
 function tableUpdate(dtFilter) {
-    // this prints out
-    console.log("test");
-
+    console.log(dtFilter);
     //clears existing table html
     tbody.html("");
     // date filter --- page reloads with ENTER - ignore default?
@@ -35,14 +34,16 @@ function tableUpdate(dtFilter) {
 }
 
 
-function updateFilter(event) {
-    console.log("TEST 1")
-    let inputText = d3.event.target.value;
-    tableUpdate(inputText)
+function updateFilter() {
+    d3.event.preventDefault();
+    console.log("TEST 1");
+    let inputText = d3.select("#datetime").property("value");
+    tableUpdate(inputText);
 }
 
 // filter from html form
 input.on("change", updateFilter);
+form.on("submit", updateFilter);
 
 
 // bonus: filters for each of the columns --- on change
