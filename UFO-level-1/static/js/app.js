@@ -8,20 +8,24 @@ let form = d3.select("form")
 
 // loop through data, create row, insert into td cells
 //TODO: right justify, Capitalize City Names, fix &#44 string in comments field
-tableData.forEach((report) => {
-    let row = tbody.append("tr");
-    Object.entries(report).forEach(([key, value]) => {
-        let cell = row.append("td");
-        cell.text(value);
-    }); 
-})
+function fullTable () {
+    tableData.forEach((report) => {
+        let row = tbody.append("tr");
+        Object.entries(report).forEach(([key, value]) => {
+            let cell = row.append("td");
+            cell.text(value);
+        }); 
+    })
+};
+
+//create initial table with full results
+fullTable();
 
 // func to apply filter
 function tableUpdate(dtFilter) {
     console.log(dtFilter);
     //clears existing table html
     tbody.html("");
-    // date filter --- page reloads with ENTER - ignore default?
     filteredData = tableData.filter(sighting => sighting.datetime === dtFilter);
 
     filteredData.forEach((report) => {
@@ -31,20 +35,25 @@ function tableUpdate(dtFilter) {
             cell.text(value);
         }); 
     })
-}
+};
 
 
 function updateFilter() {
     d3.event.preventDefault();
     console.log("TEST 1");
     let inputText = d3.select("#datetime").property("value");
-    tableUpdate(inputText);
-}
+    // if the field is empty, it resets the table
+    // else use the string to filter the table
+    if (inputText === "") {
+        fullTable();
+    }
+    else {
+        tableUpdate(inputText);
+    }
+    
+};
 
 // filter from html form
 input.on("change", updateFilter);
 form.on("submit", updateFilter);
-
-
-// bonus: filters for each of the columns --- on change
 
